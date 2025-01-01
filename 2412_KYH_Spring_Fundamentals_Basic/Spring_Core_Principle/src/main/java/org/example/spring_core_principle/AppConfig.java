@@ -8,9 +8,14 @@ import org.example.spring_core_principle.member.MemberServiceImpl;
 import org.example.spring_core_principle.member.MemoryMemberRespository;
 import org.example.spring_core_principle.order.OrderService;
 import org.example.spring_core_principle.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+// @Configuration은 Spring에서 설정 정보라는 것을 명시하는 Annotation
+@Configuration
 public class AppConfig {
     // 이전까지는 우리가 직접 MemberServiceImpl에서 어떤 Repository를 사용할지 결정
+    @Bean
     public MemberService memberService() {
         // 생성자 주입
         // MemoryMemberRespository 구현체를 주입해준다
@@ -19,15 +24,18 @@ public class AppConfig {
 
     // 리팩토링을 아래와 같이 한다면, AppConfig만 봐도 역할을 볼 수 있다
     // 또한 구현체가 바뀔 경우 아래 return할 구현체만 바꾸면 된다
-    private static MemoryMemberRespository memberRepository() {
+    @Bean
+    public static MemoryMemberRespository memberRepository() {
         return new MemoryMemberRespository();
     }
 
+    @Bean
     public OrderService orderService() {
         // 생성자 주입
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
+    @Bean
     public static DiscountPolicy discountPolicy() {
         // return new FixDiscountPolicy();
 
