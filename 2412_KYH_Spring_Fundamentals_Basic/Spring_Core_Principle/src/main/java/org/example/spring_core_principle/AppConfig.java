@@ -1,6 +1,8 @@
 package org.example.spring_core_principle;
 
+import org.example.spring_core_principle.discount.DiscountPolicy;
 import org.example.spring_core_principle.discount.FixDiscountPolicy;
+import org.example.spring_core_principle.discount.RateDiscountPolicy;
 import org.example.spring_core_principle.member.MemberService;
 import org.example.spring_core_principle.member.MemberServiceImpl;
 import org.example.spring_core_principle.member.MemoryMemberRespository;
@@ -12,11 +14,25 @@ public class AppConfig {
     public MemberService memberService() {
         // 생성자 주입
         // MemoryMemberRespository 구현체를 주입해준다
-        return new MemberServiceImpl(new MemoryMemberRespository());
-    };
+        return new MemberServiceImpl(memberRepository());
+    }
+
+    // 리팩토링을 아래와 같이 한다면, AppConfig만 봐도 역할을 볼 수 있다
+    // 또한 구현체가 바뀔 경우 아래 return할 구현체만 바꾸면 된다
+    private static MemoryMemberRespository memberRepository() {
+        return new MemoryMemberRespository();
+    }
 
     public OrderService orderService() {
         // 생성자 주입
-        return new OrderServiceImpl(new MemoryMemberRespository(), new FixDiscountPolicy());
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
+    }
+
+    public static DiscountPolicy discountPolicy() {
+        // return new FixDiscountPolicy();
+
+        // 정률% 할인 정책으로 바꾸고자 할 때 아래 1줄만 바꾸면 된다
+        // AppConfig (구성) 영역만 변경될 뿐 클라이언트 (구현) 영역은 변경되지 않는다
+        return new RateDiscountPolicy();
     }
 }
