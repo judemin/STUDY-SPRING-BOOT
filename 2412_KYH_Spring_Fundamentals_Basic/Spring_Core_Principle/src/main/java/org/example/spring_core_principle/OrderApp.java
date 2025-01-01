@@ -10,8 +10,14 @@ import org.example.spring_core_principle.order.OrderServiceImpl;
 
 public class OrderApp {
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
-        OrderService orderService = new OrderServiceImpl();
+        // MemberService memberService = new MemberServiceImpl();
+        // OrderService orderService = new OrderServiceImpl();
+
+        // 기존 방식과는 다르게 AppConfig에서
+        // MemberService, OrderService 구현체를 받아와 사용
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
+        OrderService orderService = appConfig.orderService();
 
         Long memberId = 1L;
         Member member = new Member(memberId, "memeberA", Grade.VIP);

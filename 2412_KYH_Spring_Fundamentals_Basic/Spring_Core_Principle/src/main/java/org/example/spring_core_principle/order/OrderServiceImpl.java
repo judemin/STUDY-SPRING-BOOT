@@ -9,14 +9,13 @@ import org.example.spring_core_principle.member.MemoryMemberRespository;
 
 public class OrderServiceImpl implements OrderService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRespository();
-    // private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
 
-    // 할인 정책을 변경하려면 클라이언트의 코드인 OrderServiceImpl을 변경해야 한다
-    // private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
-
-    // Interface에만 의존하도록 변경
-    private DiscountPolicy discountPolicy;
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     // MemoryMemeberRepository와 FixDiscountPolicy를 구현체로 구현하여 활용 중
     @Override

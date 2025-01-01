@@ -2,7 +2,13 @@ package org.example.spring_core_principle.member;
 
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRespository();
+    private final MemberRepository memberRepository;
+
+    // 생성자를 만들어준다
+    // 이제 추상화 (Interface)에만 의존하는 형태
+    public MemberServiceImpl(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public void join(Member member) {
